@@ -1,21 +1,26 @@
-create table students(
-student_id int primary key,
-full_name varchar(100) not null,
-gender char(1) CHECK (gender IN ('M','F'))
+-- Mustafa: airlines, aircraft, gates
+CREATE DATABASE IF NOT EXISTS kigali_airport;
+USE kigali_airport;
+
+CREATE TABLE airlines (
+    airline_id INT PRIMARY KEY AUTO_INCREMENT,
+    airline_name VARCHAR(100) NOT NULL,
+    iata_code CHAR(2) UNIQUE NOT NULL,
+    country VARCHAR(50)
 );
 
-create table courses(
-course_id int primary key,
-course_name varchar(100) not null,
-credits int 
+CREATE TABLE aircraft (
+    aircraft_id INT PRIMARY KEY AUTO_INCREMENT,
+    airline_id INT NOT NULL,
+    model VARCHAR(50) NOT NULL,
+    registration_number VARCHAR(20) UNIQUE NOT NULL,
+    capacity INT NOT NULL,
+    FOREIGN KEY (airline_id) REFERENCES airlines(airline_id)
 );
- 
- create table results(
- result_id int primary key,
- student_id int,
- course_id int,
- mark int CHECK (mark BETWEEN 0 AND 100),
- foreign key (student_id) references students (student_id),
- foreign key (course_id) references courses(course_id)
- );
- 
+
+CREATE TABLE gates (
+    gate_id INT PRIMARY KEY AUTO_INCREMENT,
+    gate_number VARCHAR(10) UNIQUE NOT NULL,
+    terminal VARCHAR(20),
+    status ENUM('available','occupied','maintenance') DEFAULT 'available'
+);
